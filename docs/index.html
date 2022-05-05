@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Tailwindcss -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Brython -->
+    <script type="text/javascript" src='./static/js/brython.js'></script>
+    <script type="text/javascript" src='./static/js/brython_stdlib.js'></script>
+    <!-- Python -->
+    <script type="text/python" src='./static/py/main.py'></script>
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Righteous&display=swap" rel="stylesheet">
+    <audio id="audio" src="./static/assets/codec.mp3" type="audio/mp3"></audio>
+    <title>Pomodoro Clock</title>
+</head>
+
+<body onload="brython()" id="body"
+    class="p-4 text-center flex flex-col h-screen" style="font-family: 'Righteous', cursive">
+    <header class="flex justify-center">
+        <p class="text-red-500 text-5xl">Pomodor</p>
+        <div class="flex items-end pb-1">
+            <img class="h-8" src="./static/assets/pomo.png" alt="pomodoro">
+        </div>
+    </header>
+
+    <main class="grow">
+        <div id="inputs" class="pt-2 flex justify-center"> 
+            <div class="mr-4">
+                <p for="work">work time</p>
+                <!-- <input id="work" class="border w-12 pl-2" type="number" min="1" max="59" value="25"> -->
+                <div class="flex flex-col">
+                    <i id="workup" class="fa fa-caret-up text-4xl -mb-3 -mt-4"></i>
+                    <span id="work" class="text-xl">05</span>
+                    <i id="workdown" class="fa fa-caret-down text-4xl -mt-3"></i>
+                </div>
+            </div>
+            <div class="mr-4">
+                <p for="pause">break time</p>
+                <!-- <input id="pause" class="border w-12 pl-2" type="number" min="1" max="59" value="5"> -->
+                <div class="flex flex-col">
+                    <i id="breakup"  class="fa fa-caret-up text-4xl -mb-3 -mt-4"></i>
+                    <span id="pause" class="text-xl">01</span>
+                    <i id="breakdown"  class="fa fa-caret-down text-4xl -mt-3"></i>
+                </div> 
+            </div> 
+            <div class="mr-4">
+                <p for="pause">sessions</p>
+                <!-- <input id="sessions" class="border w-12 pl-2" type="number" min="1" max="10" value="4"> -->
+                <div class="flex flex-col">
+                    <i id="sessionup" class="fa fa-caret-up text-4xl -mb-3 -mt-4"></i>
+                    <span id="sessions" class="text-xl">02</span>
+                    <i id="sessiondown" class="fa fa-caret-down text-4xl -mt-3"></i>
+                </div>         
+            </div>
+        </div>
+
+        <div class="mt-2">
+            <button id="stst" value="initial"
+                class="rounded py-2 w-24 bg-green-600 text-white">
+                start</button>
+            <button id="reset"
+                class="rounded py-2 w-24 ml-2 bg-blue-600 text-white hidden">
+                reset</button>
+        </div>
+
+        <div class="text-5xl mt-3">
+            <p><span id="status">timer</span> <span id="x_session"></span></p>
+            <span id="mins">05</span>:<span id="secs">00</span>
+        </div>
+    </main>
+
+    <footer class="text-sm text-gray-300">
+        <p>Developed by <a target="_blank" class="underline" href="https://github.com/thigoap">thigoap</a> with Brython and TailwindCSS</p>
+        <a target="_blank" href="https://www.flaticon.com/br/icones-gratis/pomodoro" >Pomodoro icons created by Freepik - Flaticon</a>
+    </footer>
+
+</body>
+</html>
