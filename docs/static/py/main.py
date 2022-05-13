@@ -3,66 +3,71 @@ from browser import document, timer, bind
 _timer = None
 x_time = 0 # 0 = break time / 1 = working time
 status = 0 # 0 = initial or finished a cycle / 1 = running
-session = 0
+session = 1
+auto = 0
 
-@bind(document['stst'], 'click')
+@bind(document['stBtn'], 'click')
 def pomodoro_stst(e):
-    global state, status, sessions, _timer
-    state = document['stst'].value
-    if state == 'running': #stop pomodoro
-        document['stst'].text = 'continue'
-        document['stst'].value = 'stoped'
-        document['stst'].classList.add('bg-green-600')
-        document['stst'].classList.remove('bg-red-500')
-        document['reset'].classList.remove('hidden')    
+    global status, sessions, _timer
+    if document['stBtn'].value == 'RUNNING': # stop pomodoro    
+        btn_greener()
         timer.clear_interval(_timer)
-    else: #start pomodoro
+    else: # start pomodoro
         set_current_time(status)
         status = 1 # running
-        document['stst'].text = 'stop'
-        document['stst'].value = 'running'
-        document['stst'].classList.add('bg-red-500')
-        document['stst'].classList.remove('bg-green-600')
-        document['inputs'].classList.add('hidden')
-        document['reset'].classList.add('hidden')
+        btn_redder()
+        document['rstBtn'].disabled = True
+        document['menu'].classList.add('hidden')
         sessions = document['sessions'].text
         _timer = timer.set_interval(update_clock, 1000)
 
-@bind(document['reset'], 'click')
+@bind(document['rstBtn'], 'click')
 def pomodoro_reset(e):
     global x_time, status, session
-    document['work'].text = '%02i'%5
-    document['pause'].text = '%02i'%1
-    document['sessions'].text = '%02i'%2
+    document['work'].text = '%02i'%25
+    document['pause'].text = '%02i'%5
+    document['sessions'].text = '%02i'%5
     document['mins'].text = document['work'].text
     document['secs'].text = '%02i'%0
-    document['inputs'].classList.remove('hidden') 
-    document['stst'].classList.remove('bg-red-500')
-    document['stst'].classList.add('bg-green-600')
-    document['stst'].text = 'start'
-    document['stst'].value = 'initial'
-    document['reset'].classList.add('hidden')
+    document['menu'].classList.remove('hidden') 
+    btn_greener()
+    document['rstBtn'].disabled = True
+    document['stBtn'].text = 'start'
+    document['stBtn'].value = 'INITIAL'
     document['x_session'].text = ''
+    document['status'].text = ''
     x_time = 0
     status = 0
-    session = 0
+    session = 1
     timer.clear_interval(_timer)
 
+@bind(document['toggleBtn'], 'click')
+def auto_on_off(e):
+    global auto
+    auto = 0 if auto == 1 else 1
+
 def update_clock():
-    global state, mins, secs, status, session, sessions, x_time
-    if int(mins) == 0 and int(secs) == 0:
-        if x_time == 1: # finished a working cycle
-            document['mins'].text = document['pause'].text
-        else:
-            document['mins'].text = document['work'].text
-        if session == int(sessions) and x_time == 0:
+    global mins, secs, status, session, sessions, x_time, auto
+    if int(mins) == 0 and int(secs) == 0: 
+        if session == int(sessions) and x_time == 0: # finished everything
+            pomodoro_reset(status)
             document['status'].text = 'Pomodoro finished'
-            pomodoro_reset(state)
-        else:
+        else: # finished a cycle
             timer.clear_interval(_timer)
-            document['stst'].value = 'stoped'
+            document['stBtn'].value = 'STOPPED'
             status = 0
-            pomodoro_stst(state)
+            if x_time == 1: # finished a working cycle
+                document['mins'].text = document['pause'].text
+                document['status'].text = 'break time '
+            else: # finished a break cycle
+                document['mins'].text = document['work'].text
+                document['status'].text = 'work time '
+                session += 1
+                document['x_session'].text = '#'+str(session)
+            if auto == 1:
+                pomodoro_stst(status)
+            else:
+                btn_greener()
     else:
         secs = int(secs) - 1
         if int(mins) == 0 and int(secs) == 0:
@@ -79,16 +84,15 @@ def set_current_time(status):
         if x_time == 1: # finished a working cycle
             mins = document['pause'].text
             x_time = 0
-            document['status'].text = 'break time'
+            document['status'].text = 'break time '
         else: # finished a break cycle
             mins = document['work'].text 
-            x_time = 1 
-            session += 1   
-            document['status'].text = 'work time'    
+            x_time = 1   
+            document['status'].text = 'work time '    
     else: # running
         mins = document['mins'].text
     secs = document['secs'].text
-    document['x_session'].text = session
+    document['x_session'].text = '#'+str(session)
 
 @bind(document['workup'], 'click')
 @bind(document['breakup'], 'click')
@@ -104,7 +108,7 @@ def up(e):
             new = int(document['pause'].text) + 1
             document['pause'].text = '%02i'%new
     else:
-        if int(document['sessions'].text) <= 11:
+        if int(document['sessions'].text) < 20:
             new = int(document['sessions'].text) + 1
             document['sessions'].text = '%02i'%new
 
@@ -125,3 +129,55 @@ def down(e):
         if int(document['sessions'].text) > 1:
             new = int(document['sessions'].text) - 1
             document['sessions'].text = '%02i'%new
+
+@bind(document['btn15'], 'click')
+@bind(document['btn30'], 'click')
+@bind(document['btn45'], 'click')
+def set_new_param(e):
+    if e.target.id == 'btn15':
+        document['work'].text = 15
+        document['mins'].text = 15
+    elif e.target.id == 'btn30':
+        document['work'].text = 30
+        document['mins'].text = 30
+    elif e.target.id == 'btn45':
+        document['work'].text = 45
+        document['mins'].text = 45
+
+@bind(document['btn3'], 'click')
+@bind(document['btn5'], 'click')
+@bind(document['btn10'], 'click')
+@bind(document['btns3'], 'click')
+@bind(document['btns5'], 'click')
+@bind(document['btns10'], 'click')
+def set_new_param(e):
+    if e.target.id == 'btn3':
+        document['pause'].text = '%02i'%3
+    elif e.target.id == 'btn5':
+        document['pause'].text = '%02i'%5
+    elif e.target.id == 'btn10':
+        document['pause'].text = 10
+    elif e.target.id == 'btns3':
+        document['sessions'].text = '%02i'%3
+    elif e.target.id == 'btns5':
+        document['sessions'].text = '%02i'%5
+    elif e.target.id == 'btns10':
+        document['sessions'].text = 10
+
+def btn_redder():
+    document['stBtn'].text = 'stop'
+    document['stBtn'].value = 'RUNNING'
+    document['stBtn'].classList.add('bg-red-500')
+    document['stBtn'].classList.add('hover:bg-red-400')
+    document['stBtn'].classList.remove('bg-green-600')
+    document['stBtn'].classList.remove('hover:bg-green-500') 
+
+def btn_greener():
+    document['stBtn'].text = 'continue'
+    document['stBtn'].value = 'STOPPED'
+    document['stBtn'].classList.add('bg-green-600')
+    document['stBtn'].classList.add('hover:bg-green-500')
+    document['stBtn'].classList.remove('bg-red-500')
+    document['stBtn'].classList.remove('hover:bg-red-400')  
+    document['rstBtn'].disabled = False
+ 

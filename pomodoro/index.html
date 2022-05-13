@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Tailwindcss -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Toggle CSS -->
+    <link rel="stylesheet" href="./static/css/main.css">
+    <!-- Brython -->
+    <script type="text/javascript" src='./static/js/brython.js'></script>
+    <script type="text/javascript" src='./static/js/brython_stdlib.js'></script>
+    <!-- Momentum JS -->
+    <script type="text/javascript" src='./static/js/momentum.js'></script>    
+    <!-- Python -->
+    <script type="text/python" src='./static/py/main.py'></script>
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Righteous&display=swap" rel="stylesheet">
+    <audio id="audio" src="./static/assets/audio/codec.mp3" type="audio/mp3"></audio>
+    <title>Pomodoro Clock</title>
+</head>
+
+<body onload="brython()" id="body"
+    class="p-4 text-center flex flex-col h-screen bg-slate-50" style="font-family: 'Righteous', cursive">
+    <header class="flex justify-center">
+        <p class="text-red-500 text-5xl">Pomodor</p>
+        <div class="flex items-end pb-1">
+            <img class="h-8" src="./static/assets/pomo.png" alt="pomodoro">
+        </div>
+    </header>
+
+    <main class="grow">
+        
+        <div class="mt-2">
+            <button id="stBtn" value="initial"
+                class="transition ease-in-out rounded py-2 w-24 bg-green-600 text-white hover:bg-green-500 duration-200">
+                start</button>
+            <button id="rstBtn" disabled
+                class="rounded py-2 w-24 ml-2 bg-blue-600 text-white hover:bg-blue-500 duration-200 disabled:bg-slate-300">
+                reset</button>
+        </div>
+        
+        <div class="mt-3">
+            <p class="text-5xl">
+                <span id="mins">25</span>:<span id="secs">00</span>
+            </p>
+            <p class="text-3xl text-slate-500">
+                <span id="status"></span><span id="x_session"></span>
+            </p>
+        </div>
+
+        <section id="menu" class="pt-2 flex flex-col text-slate-600"> 
+            <div id="inputs" class="flex justify-center mb-2">
+                <div class="mx-2">
+                    <p>Work time</p>
+                    <!-- <input id="work" class="border w-12 pl-2" type="number" min="1" max="59" value="25"> -->
+                    <div class="flex flex-col align-center">
+                        <div class="flex justify-center">
+                            <img id="workup" class="h-4 cursor-pointer"
+                            src="./static/assets/caret-up.png">
+                        </div>
+                        <span id="work" class="text-xl">25</span>
+                        <div class="flex justify-center">
+                            <img id="workdown" class="h-4 cursor-pointer"
+                            src="./static/assets/caret-down.png">
+                        </div>
+                    </div>
+                    <div class="flex justify-around text-slate-400">
+                        <p id="btn15" class="cursor-pointer">15</p>
+                        <p id="btn30" class="cursor-pointer">30</p>
+                        <p id="btn45" class="cursor-pointer">45</p>
+                    </div>
+                </div>
+                <div class="mx-2">
+                    <p>Break time</p>
+                    <!-- <input id="pause" class="border w-12 pl-2" type="number" min="1" max="59" value="5"> -->
+                    <div class="flex flex-col">
+                        <div class="flex justify-center">
+                            <img id="breakup" class="h-4 cursor-pointer"
+                        src="./static/assets/caret-up.png">
+                        </div>
+                        <span id="pause" class="text-xl ">05</span>
+                        <div class="flex justify-center">
+                            <img id="breakdown" class="h-4 cursor-pointer"
+                            src="./static/assets/caret-down.png">
+                        </div>
+                    </div> 
+                    <div class="flex justify-around text-slate-400">
+                        <p id="btn3" class="cursor-pointer">03</p>
+                        <p id="btn5" class="cursor-pointer">05</p>
+                        <p id="btn10" class="cursor-pointer">10</p>
+                    </div>
+                </div> 
+                <div class="mx-2">
+                    <p>Sessions</p>
+                    <!-- <input id="sessions" class="border w-12 pl-2" type="number" min="1" max="10" value="4"> -->
+                    <div class="flex flex-col">
+                        <div class="flex justify-center">
+                            <img id="sessionup" class="h-4 cursor-pointer"
+                            src="./static/assets/caret-up.png">
+                        </div>
+                        <span id="sessions" class="text-xl">05</span>
+                        <div class="flex justify-center">
+                            <img id="sessiondown" class="h-4 cursor-pointer"
+                            src="./static/assets/caret-down.png">
+                        </div>
+                    </div>  
+                    <div class="flex justify-around text-slate-400">
+                        <p id="btns3" class="cursor-pointer">03</p>
+                        <p id="btns5" class="cursor-pointer">05</p>
+                        <p id="btns10" class="cursor-pointer">10</p>
+                    </div>       
+                </div>
+            </div>
+            
+            <div class="flex items-center justify-center w-full mb-2">
+                <label for="toggleBtn" class="flex items-center cursor-pointer">
+                    <!-- toggle -->
+                    <div class="relative">
+                        <!-- input -->
+                        <input type="checkbox" id="toggleBtn" class="sr-only">
+                        <!-- line -->
+                        <div class="block bg-slate-400 w-10 h-6 rounded-full">
+                        </div>
+                        <!-- dot -->
+                        <div class="dot absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition">
+                        </div>
+                    </div>
+                    <!-- label -->
+                    <div class="ml-3 font-medium">
+                        Auto start
+                    </div>
+                </label>  
+            </div>
+        </section>
+        
+    </main>
+    
+    <footer class="text-sm text-slate-300 pb-8 sm:pb-0">
+        <p>Developed by <a target="_blank" class="underline" href="https://github.com/thigoap">thigoap</a> with Brython and TailwindCSS</p>
+        <a target="_blank" href="https://www.flaticon.com/br/icones-gratis/pomodoro" >Pomodoro icons created by Freepik - Flaticon</a>
+    </footer>
+    
+</body>
+</html>
