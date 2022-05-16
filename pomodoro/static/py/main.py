@@ -10,16 +10,16 @@ auto = 0
 def pomodoro_stst(e):
     global status, sessions, _timer
     if document['stBtn'].value == 'RUNNING': # stop pomodoro    
-        btn_greener()
+        btn_to_start()
         timer.clear_interval(_timer)
     else: # start pomodoro
         set_current_time(status)
         status = 1 # running
-        btn_redder()
+        btn_to_stop()
+        disable_btns()
         document['rstBtn'].disabled = True
-        document['menu'].classList.add('hidden')
         sessions = document['sessions'].text
-        _timer = timer.set_interval(update_clock, 1000)
+        _timer = timer.set_interval(update_clock, 100)
 
 @bind(document['rstBtn'], 'click')
 def pomodoro_reset(e):
@@ -29,8 +29,8 @@ def pomodoro_reset(e):
     document['sessions'].text = '%02i'%5
     document['mins'].text = document['work'].text
     document['secs'].text = '%02i'%0
-    document['menu'].classList.remove('hidden') 
-    btn_greener()
+    btn_to_start()
+    enable_btns()
     document['rstBtn'].disabled = True
     document['stBtn'].text = 'start'
     document['stBtn'].value = 'INITIAL'
@@ -67,7 +67,7 @@ def update_clock():
             if auto == 1:
                 pomodoro_stst(status)
             else:
-                btn_greener()
+                btn_to_start()
     else:
         secs = int(secs) - 1
         if int(mins) == 0 and int(secs) == 0:
@@ -164,7 +164,16 @@ def set_new_param(e):
     elif e.target.id == 'btns10':
         document['sessions'].text = 10
 
-def btn_redder():
+@bind(document['setBtn'], 'click')
+def show_modal(e):
+    document['modal-container'].classList.remove('hidden')
+
+@bind(document['closeBtn'], 'click')
+def hide_modal(e):
+    document['modal-container'].classList.add('hidden')
+
+
+def btn_to_stop():
     document['stBtn'].text = 'stop'
     document['stBtn'].value = 'RUNNING'
     document['stBtn'].classList.add('bg-red-500')
@@ -172,7 +181,7 @@ def btn_redder():
     document['stBtn'].classList.remove('bg-green-600')
     document['stBtn'].classList.remove('hover:bg-green-500') 
 
-def btn_greener():
+def btn_to_start():
     document['stBtn'].text = 'continue'
     document['stBtn'].value = 'STOPPED'
     document['stBtn'].classList.add('bg-green-600')
@@ -180,4 +189,66 @@ def btn_greener():
     document['stBtn'].classList.remove('bg-red-500')
     document['stBtn'].classList.remove('hover:bg-red-400')  
     document['rstBtn'].disabled = False
- 
+
+def disable_btns():
+    document['workup'].disabled = True
+    document['workdown'].disabled = True
+    document['breakup'].disabled = True
+    document['breakdown'].disabled = True
+    document['sessionup'].disabled = True
+    document['sessiondown'].disabled = True
+    document['btn15'].disabled = True
+    document['btn30'].disabled = True
+    document['btn45'].disabled = True
+    document['btn3'].disabled = True
+    document['btn5'].disabled = True
+    document['btn10'].disabled = True
+    document['btns3'].disabled = True
+    document['btns5'].disabled = True
+    document['btns10'].disabled = True
+    document['toggleBtn'].disabled = True
+    document['btn15'].classList.remove('cursor-pointer')
+    document['btn30'].classList.remove('cursor-pointer')
+    document['btn45'].classList.remove('cursor-pointer')
+    document['btn3'].classList.remove('cursor-pointer')
+    document['btn5'].classList.remove('cursor-pointer')
+    document['btn10'].classList.remove('cursor-pointer')
+    document['btns3'].classList.remove('cursor-pointer')
+    document['btns5'].classList.remove('cursor-pointer')
+    document['btns10'].classList.remove('cursor-pointer')
+    document['toggleBtnCursor'].classList.remove('cursor-pointer') 
+    document['msg'].classList.remove('hidden')
+    document['modal'].classList.remove('h-52')
+    document['modal'].classList.add('h-56')
+
+
+def enable_btns():
+    document['workup'].disabled = False
+    document['workdown'].disabled = False
+    document['breakup'].disabled = False
+    document['breakdown'].disabled = False
+    document['sessionup'].disabled = False
+    document['sessiondown'].disabled = False
+    document['btn15'].disabled = False
+    document['btn30'].disabled = False
+    document['btn45'].disabled = False
+    document['btn3'].disabled = False
+    document['btn5'].disabled = False
+    document['btn10'].disabled = False
+    document['btns3'].disabled = False
+    document['btns5'].disabled = False
+    document['btns10'].disabled = False
+    document['toggleBtn'].disabled = False
+    document['btn15'].classList.add('cursor-pointer')
+    document['btn30'].classList.add('cursor-pointer')
+    document['btn45'].classList.add('cursor-pointer')
+    document['btn3'].classList.add('cursor-pointer')
+    document['btn5'].classList.add('cursor-pointer')
+    document['btn10'].classList.add('cursor-pointer')
+    document['btns3'].classList.add('cursor-pointer')
+    document['btns5'].classList.add('cursor-pointer')
+    document['btns10'].classList.add('cursor-pointer')
+    document['toggleBtnCursor'].classList.add('cursor-pointer')
+    document['msg'].classList.add('hidden')
+    document['modal'].classList.add('h-52')
+    document['modal'].classList.remove('h-56')

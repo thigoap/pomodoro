@@ -7,7 +7,6 @@ See it live here: [Pomodoro](https://thigoap.github.io/pomodoro)
 #### Items to do:
 
 - insert a long break;
-- show modal with settings while running;
 - add activities;
 - dark mode toggle;
 - add new alarm sounds;
@@ -15,3 +14,4 @@ See it live here: [Pomodoro](https://thigoap.github.io/pomodoro)
 #### Items done:
 
 - option to start work or break times manually;
+- modal with settings;
