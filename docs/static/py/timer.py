@@ -18,15 +18,20 @@ def pomodoro_stst(e):
         btn_to_stop()
         disable_btns()
         document['rstBtn'].disabled = True
-        sessions = document['sessions'].text
-        _timer = timer.set_interval(update_clock, 100)
+        sessions = int(document['sessions'].text)
+        _timer = timer.set_interval(update_clock, 1000)
 
 @bind(document['rstBtn'], 'click')
-def pomodoro_reset(e):
+def pomodoro_hard_reset(e):
     global x_time, status, session
     document['work'].text = '%02i'%25
     document['pause'].text = '%02i'%5
     document['sessions'].text = '%02i'%5
+    document['lbreak'].text = '%02i'%10
+    pomodoro_soft_reset(status)
+
+def pomodoro_soft_reset(e):
+    global x_time, status, session
     document['mins'].text = document['work'].text
     document['secs'].text = '%02i'%0
     btn_to_start()
@@ -34,8 +39,8 @@ def pomodoro_reset(e):
     document['rstBtn'].disabled = True
     document['stBtn'].text = 'start'
     document['stBtn'].value = 'INITIAL'
-    document['x_session'].text = ''
-    document['status'].text = ''
+    document['x_session'].text = '' 
+    document['status'].text = 'Timer'
     x_time = 0
     status = 0
     session = 1
@@ -49,14 +54,17 @@ def auto_on_off(e):
 def update_clock():
     global mins, secs, status, session, sessions, x_time, auto
     if int(mins) == 0 and int(secs) == 0: 
-        if session == int(sessions) and x_time == 0: # finished everything
-            pomodoro_reset(status)
+        if session == sessions and x_time == 0: # finished everything
+            pomodoro_soft_reset(status)
             document['status'].text = 'Pomodoro finished'
         else: # finished a cycle
             timer.clear_interval(_timer)
             document['stBtn'].value = 'STOPPED'
             status = 0
-            if x_time == 1: # finished a working cycle
+            if x_time == 1 and session == sessions: # finished a working cycle and last session
+                document['mins'].text = document['lbreak'].text
+                document['status'].text = 'long break time '
+            elif x_time == 1: # finished a working cycle
                 document['mins'].text = document['pause'].text
                 document['status'].text = 'break time '
             else: # finished a break cycle
@@ -81,13 +89,17 @@ def update_clock():
 def set_current_time(status):
     global mins, secs, x_time, session
     if status == 0: # intial or finished a cycle
-        if x_time == 1: # finished a working cycle
+        if x_time == 1 and session == sessions:
+            mins = document['work'].text
+            x_time = 0
+            document['status'].text = 'long break time '            
+        elif x_time == 1: # finished a working cycle
             mins = document['pause'].text
             x_time = 0
             document['status'].text = 'break time '
         else: # finished a break cycle
             mins = document['work'].text 
-            x_time = 1   
+            x_time = 1 
             document['status'].text = 'work time '    
     else: # running
         mins = document['mins'].text
@@ -97,6 +109,7 @@ def set_current_time(status):
 @bind(document['workup'], 'click')
 @bind(document['breakup'], 'click')
 @bind(document['sessionup'], 'click')
+@bind(document['lbreakup'], 'click')
 def up(e):
     if e.target.id == 'workup':
         if int(document['work'].text) < 60:
@@ -107,14 +120,19 @@ def up(e):
         if int(document['pause'].text) < 60:
             new = int(document['pause'].text) + 1
             document['pause'].text = '%02i'%new
-    else:
+    elif e.target.id == 'sessionup':
         if int(document['sessions'].text) < 20:
             new = int(document['sessions'].text) + 1
             document['sessions'].text = '%02i'%new
+    elif e.target.id == 'lbreakup':
+        if int(document['lbreak'].text) < 60:
+            new = int(document['lbreak'].text) + 1
+            document['lbreak'].text = '%02i'%new
 
 @bind(document['workdown'], 'click')
 @bind(document['breakdown'], 'click')
 @bind(document['sessiondown'], 'click')
+@bind(document['lbreakdown'], 'click')
 def down(e):
     if e.target.id == 'workdown':
         if int(document['work'].text) > 2:
@@ -125,10 +143,14 @@ def down(e):
         if int(document['pause'].text) > 1:
             new = int(document['pause'].text) - 1
             document['pause'].text = '%02i'%new
-    else:
+    elif e.target.id == 'sessiondown':
         if int(document['sessions'].text) > 1:
             new = int(document['sessions'].text) - 1
             document['sessions'].text = '%02i'%new
+    elif e.target.id == 'lbreakdown':
+        if int(document['lbreak'].text) > 1:
+            new = int(document['lbreak'].text) - 1
+            document['lbreak'].text = '%02i'%new
 
 @bind(document['btn15'], 'click')
 @bind(document['btn30'], 'click')
@@ -164,14 +186,24 @@ def set_new_param(e):
     elif e.target.id == 'btns10':
         document['sessions'].text = 10
 
+@bind(document['btnl10'], 'click')
+@bind(document['btnl20'], 'click')
+@bind(document['btnl30'], 'click')
+def set_new_param(e):
+    if e.target.id == 'btnl10':
+        document['lbreak'].text = 10
+    elif e.target.id == 'btnl20':
+        document['lbreak'].text = 20
+    elif e.target.id == 'btnl30':
+        document['lbreak'].text = 30
+
 @bind(document['setBtn'], 'click')
 def show_modal(e):
-    document['modal-container'].classList.remove('hidden')
+    document['modalSetsContainer'].classList.remove('hidden')
 
-@bind(document['closeBtn'], 'click')
+@bind(document['closeSetsBtn'], 'click')
 def hide_modal(e):
-    document['modal-container'].classList.add('hidden')
-
+    document['modalSetsContainer'].classList.add('hidden')
 
 def btn_to_stop():
     document['stBtn'].text = 'stop'
@@ -218,9 +250,8 @@ def disable_btns():
     document['btns10'].classList.remove('cursor-pointer')
     document['toggleBtnCursor'].classList.remove('cursor-pointer') 
     document['msg'].classList.remove('hidden')
-    document['modal'].classList.remove('h-52')
-    document['modal'].classList.add('h-56')
-
+    document['modalSets'].classList.remove('h-52')
+    document['modalSets'].classList.add('h-56')
 
 def enable_btns():
     document['workup'].disabled = False
@@ -250,5 +281,5 @@ def enable_btns():
     document['btns10'].classList.add('cursor-pointer')
     document['toggleBtnCursor'].classList.add('cursor-pointer')
     document['msg'].classList.add('hidden')
-    document['modal'].classList.add('h-52')
-    document['modal'].classList.remove('h-56')
+    document['modalSets'].classList.add('h-52')
+    document['modalSets'].classList.remove('h-56')

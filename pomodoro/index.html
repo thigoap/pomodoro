@@ -13,13 +13,14 @@
     <!-- Momentum JS -->
     <script type="text/javascript" src='./static/js/momentum.js'></script>    
     <!-- Python -->
-    <script type="text/python" src='./static/py/main.py'></script>
+    <script type="text/python" src='./static/py/timer.py'></script>
+    <script type="text/python" src='./static/py/tasks.py'></script>
     <!-- Google Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Righteous&display=swap" rel="stylesheet">
-    <audio id="audio" src="./static/assets/audio/codec.mp3" type="audio/mp3"></audio>
     <title>Pomodoro Clock</title>
+    <audio id="audio" src="./static/assets/audio/codec.mp3" type="audio/mp3"></audio>
 </head>
 
 <body onload="brython()" id="body"
@@ -33,7 +34,7 @@
 
     <main class="grow">
         
-        <section id="buttons" class="mt-2">
+        <section id="buttons" class="my-2">
             <div class="flex align-center justify-center">
             <button id="setBtn" class="flex justify-center rounded py-2 w-12 mx-1 bg-slate-800 hover:bg-slate-600 duration-200">
                 <img class="mx-1 h-6 cursor-pointer"
@@ -48,17 +49,17 @@
             </div>
         </section>
 
-        <section id="timer" class="mt-3">
+        <section id="timer" class="mt-4">
+            <p class="text-3xl text-slate-500">
+                <span id="status">Timer</span><span id="x_session"></span>
+            </p>
             <p class="text-5xl">
                 <span id="mins">25</span>:<span id="secs">00</span>
             </p>
-            <p class="text-3xl text-slate-500">
-                <span id="status"></span><span id="x_session"></span>
-            </p>
         </section>
 
-        <section id="modal-container" class="hidden fixed flex justify-center items-center bg-opacity-40 bg-slate-500 h-full w-full top-0 left-0">
-            <div id="modal" class="bg-slate-50 p-3 h-52 rounded">  
+        <section id="modalSetsContainer" class="hidden fixed flex justify-center items-center bg-opacity-40 bg-slate-500 h-full w-full top-0 left-0">
+            <div id="modalSets" class="bg-slate-50 p-3 h-52 rounded">  
                 <p id="msg" class="text-red-500 text-xs hidden">Reset the timer to enable controls</p>              
                 <div id="inputs" class="flex justify-center mb-2">  
                     <div class="mx-2">
@@ -118,6 +119,25 @@
                             <p><input type="button" id="btns10" class="cursor-pointer" value="10"></p>
                         </div>       
                     </div>
+                    <div class="mx-2">
+                        <p>Long break</p>
+                        <div class="flex flex-col align-center">
+                            <div class="flex justify-center">
+                                <input type="image" id="lbreakup" class="h-4"
+                                    src="./static/assets/caret-up.png">
+                            </div>
+                            <span id="lbreak" class="text-xl text-slate-700">10</span>
+                            <div class="flex justify-center">
+                                <input type="image" id="lbreakdown" class="h-4"
+                                src="./static/assets/caret-down.png">
+                            </div>
+                        </div>
+                        <div class="flex justify-around text-slate-400">
+                            <p><input type="button" id="btnl10" class="cursor-pointer" value="10"></p>
+                            <p><input type="button" id="btnl20" class="cursor-pointer" value="20"></p>
+                            <p><input type="button" id="btnl30" class="cursor-pointer" value="30"></p>
+                        </div>
+                    </div>
                 </div>
                 
                 <div class="flex items-center justify-center w-full">
@@ -140,16 +160,76 @@
                     </label>  
                 </div>
                 <div>
-                    <button id="closeBtn"
+                    <button id="closeSetsBtn"
                     class="rounded py-1 mt-2 w-16 bg-slate-800 text-white hover:bg-slate-700 duration-200">
                     close</button>
                 </div>
             </div>
         </section>
 
+        <section id="tasks" class="mt-20 mx-auto sm:w-3/5 lg:w-2/5 text-left">
+            <div class="flex justify-between border-b-2">
+                <p class="text-2xl grow mr-1">Tasks</p>
+                <p class="flex items-center"><input type="image" id="newTaskBtn" class="rounded w-6 bg-slate-800 hover:bg-slate-600 duration-200"
+                src="./static/assets/add-white.png">
+                </p>
+                <p class="flex items-center"><input type="image" id="delTasksBtn" class="rounded w-6 ml-2 bg-slate-800 hover:bg-slate-600 duration-200"
+                src="./static/assets/delete.png">
+                </p>
+            </div>
+            <div id="tasksList" class="flex flex-col divide-y">
+            </div>
+        </section>
+
+        <section id="modalAddTasksContainer" class="hidden fixed flex justify-center items-center bg-opacity-40 bg-slate-500 h-full w-full top-0 left-0">
+            <div id="modalAddTasks" class="bg-slate-50 p-2 h-24 rounded flex flex-col justify-center">  
+                <div>
+                    <input id="task" type="text" class="px-1 w-64">
+                    <button id="addBtn"
+                    class="rounded py-1 w-12 ml-2 bg-slate-800 text-white hover:bg-slate-700 duration-200">ADD</button> 
+                </div>
+                <div>
+                    <button id="closeAddTasksBtn"
+                    class="rounded py-1 mt-2 w-16 bg-slate-800 text-white hover:bg-slate-700 duration-200">
+                    close</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="modalEditTasksContainer" class="hidden fixed flex justify-center items-center bg-opacity-40 bg-slate-500 h-full w-full top-0 left-0">
+            <div id="modalEditTasks" class="bg-slate-50 p-2 h-24 rounded flex flex-col justify-center">  
+                <div>
+                    <input id="taskToEdit" type="text" class="px-1 w-64">
+                    <button id="editBtn"
+                    class="rounded py-1 w-12 ml-2 bg-slate-800 text-white hover:bg-slate-700 duration-200">EDIT</button> 
+                </div>
+                <div>
+                    <button id="closeEditTasksBtn"
+                    class="rounded py-1 mt-2 w-16 bg-slate-800 text-white hover:bg-slate-700 duration-200">
+                    close</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="modalDellAllTasksContainer" class="hidden fixed flex justify-center items-center bg-opacity-40 bg-slate-500 h-full w-full top-0 left-0">
+            <div id="modalDellAllTasks" class="bg-slate-50 p-2 h-24 rounded flex flex-col justify-center">  
+                <div>
+                    <p>Delete all tasks?</p>
+                </div>
+                <div>
+                    <button id="dellAllTasksBtn"
+                    class="rounded py-1 mt-2 w-16 bg-red-500 text-white hover:bg-red-400 duration-200">
+                    OK</button>
+                    <button id="closeDellAllTasksBtn"
+                    class="rounded py-1 mt-2 w-16 bg-slate-800 text-white hover:bg-slate-700 duration-200">
+                    cancel</button>
+                </div>
+            </div>
+        </section>
+
     </main>
     
-    <footer class="text-sm text-slate-300 pb-8 sm:pb-0">
+    <footer class="text-sm text-slate-300 pb-12 sm:pb-0">
         <p>Developed by <a target="_blank" class="underline" href="https://github.com/thigoap">thigoap</a> with Brython and TailwindCSS</p>
         <a target="_blank" href="https://www.flaticon.com/br" >Icons created by Freepik - Flaticon</a>
     </footer>
