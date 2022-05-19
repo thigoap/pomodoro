@@ -19,16 +19,18 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Righteous&display=swap" rel="stylesheet">
-    <audio id="audio" src="./static/assets/audio/codec.mp3" type="audio/mp3"></audio>
     <title>Pomodoro Clock</title>
+    <link rel="icon" type="image/x-icon" href="./static/assets/img/favicon.ico">
+    <audio id="audio" src="./static/assets/audio/codec.mp3" type="audio/mp3"></audio>
 </head>
 
 <body onload="brython()" id="body"
-    class="p-4 text-center flex flex-col h-screen bg-slate-50" style="font-family: 'Righteous', cursive">
+    class="text-center flex flex-col h-full bg-slate-50" style="font-family: 'Righteous', cursive">
+    <div class="pt-4 h-screen">
     <header class="flex justify-center mb-4">
         <p class="text-red-500 text-5xl">Pomodor</p>
         <div class="flex items-end pb-1">
-            <img class="h-8" src="./static/assets/pomo.png" alt="pomodoro">
+            <img class="h-8" src="./static/assets/img/pomo.png" alt="pomodoro">
         </div>
     </header>
 
@@ -38,7 +40,7 @@
             <div class="flex align-center justify-center">
             <button id="setBtn" class="flex justify-center rounded py-2 w-12 mx-1 bg-slate-800 hover:bg-slate-600 duration-200">
                 <img class="mx-1 h-6 cursor-pointer"
-                src="./static/assets/settings-white.png">
+                src="./static/assets/img/settings-white.png">
             </button>
             <button id="stBtn" value="initial"
                 class="rounded py-2 w-24 mx-1 bg-green-600 text-white hover:bg-green-500 duration-200">
@@ -67,12 +69,12 @@
                         <div class="flex flex-col align-center">
                             <div class="flex justify-center">
                                 <input type="image" id="workup" class="h-4"
-                                    src="./static/assets/caret-up.png">
+                                    src="./static/assets/img/caret-up.png">
                             </div>
                             <span id="work" class="text-xl text-slate-700">25</span>
                             <div class="flex justify-center">
                                 <input type="image" id="workdown" class="h-4"
-                                src="./static/assets/caret-down.png">
+                                src="./static/assets/img/caret-down.png">
                             </div>
                         </div>
                         <div class="flex justify-around text-slate-400">
@@ -86,12 +88,12 @@
                         <div class="flex flex-col">
                             <div class="flex justify-center">
                                 <input type="image" id="breakup" class="h-4"
-                            src="./static/assets/caret-up.png">
+                            src="./static/assets/img/caret-up.png">
                             </div>
                             <span id="pause" class="text-xl text-slate-700">05</span>
                             <div class="flex justify-center">
                                 <input type="image" id="breakdown" class="h-4"
-                                src="./static/assets/caret-down.png">
+                                src="./static/assets/img/caret-down.png">
                             </div>
                         </div> 
                         <div class="flex justify-around text-slate-400">
@@ -105,12 +107,12 @@
                         <div class="flex flex-col">
                             <div class="flex justify-center">
                                 <input type="image" id="sessionup" class="h-4"
-                                src="./static/assets/caret-up.png">
+                                src="./static/assets/img/caret-up.png">
                             </div>
                             <span id="sessions" class="text-xl text-slate-700">05</span>
                             <div class="flex justify-center">
                                 <input type="image" id="sessiondown" class="h-4"
-                                src="./static/assets/caret-down.png">
+                                src="./static/assets/img/caret-down.png">
                             </div>
                         </div>  
                         <div class="flex justify-around text-slate-400">
@@ -124,12 +126,12 @@
                         <div class="flex flex-col align-center">
                             <div class="flex justify-center">
                                 <input type="image" id="lbreakup" class="h-4"
-                                    src="./static/assets/caret-up.png">
+                                    src="./static/assets/img/caret-up.png">
                             </div>
                             <span id="lbreak" class="text-xl text-slate-700">10</span>
                             <div class="flex justify-center">
                                 <input type="image" id="lbreakdown" class="h-4"
-                                src="./static/assets/caret-down.png">
+                                src="./static/assets/img/caret-down.png">
                             </div>
                         </div>
                         <div class="flex justify-around text-slate-400">
@@ -167,14 +169,15 @@
             </div>
         </section>
 
-        <section id="tasks" class="mt-20 mx-auto sm:w-3/5 lg:w-2/5 text-left">
+        <section id="tasks" class="mt-20 px-4 sm:px-0 mx-auto sm:w-3/5 lg:w-2/5 text-left">
             <div class="flex justify-between border-b-2">
                 <p class="text-2xl grow mr-1">Tasks</p>
                 <p class="flex items-center"><input type="image" id="newTaskBtn" class="rounded w-6 bg-slate-800 hover:bg-slate-600 duration-200"
-                src="./static/assets/add-white.png">
+                src="./static/assets/img/add-white.png">
                 </p>
-                <p class="flex items-center"><input type="image" id="delTasksBtn" class="rounded w-6 ml-2 bg-slate-800 hover:bg-slate-600 duration-200"
-                src="./static/assets/delete.png">
+                <p class="flex items-center"><input type="image" id="delTasksBtn" disabled
+                    class="rounded w-6 ml-2 bg-red-500 hover:bg-red-400 disabled:bg-slate-300 duration-200"
+                src="./static/assets/img/delete-white.png">
                 </p>
             </div>
             <div id="tasksList" class="flex flex-col divide-y">
@@ -227,12 +230,30 @@
             </div>
         </section>
 
+        
     </main>
+    </div>
+    <section class="bg-red-500 text-white text-left px-4 md:px-0 pt-4">
+        <div class="md:w-7/12 mx-auto">
+            <p class="sm:text-3xl text-2xl border-b">O que é a técnica Pomodoro?</p>
+            <p class="sm:leading-relaxed">A Técnica Pomodoro é um método de gerenciamento de tempo desenvolvido por Francesco Cirillo no final dos anos 1980. A técnica consiste na utilização de um cronômetro para dividir o trabalho em períodos de 25 minutos, separados por breves intervalos. A técnica deriva seu nome da palavra italiana pomodoro (tomate), como referência ao popular cronômetro gastronômico na forma dessa fruta. O método é baseado na ideia de que pausas frequentes podem aumentar a agilidade mental. - fonte: <a href="https://pt.wikipedia.org/wiki/T%C3%A9cnica_pomodoro" target="_blank">Wikipedia</a></p>
+            <p class="sm:text-3xl text-xl border-b mt-4">Como usar a técnica Pomodoro?</p>
+            <ol class="list-decimal list-inside">
+                <li>Adicione tarefas à lista (tasks);</li>
+                <li>Defina o tempo das atividades (work) e dos intervalos (breaks);</li>
+                <li>Inicie o timer e foque somente em uma tarefa durante esse período (work time);</li>
+                <li>Ao concluir o tempo, faça uma pausa curta (break time);</li>
+                <li>Repita o processo algumas vezes (sessions);</li>
+                <li>Ao completar o ciclo, faça uma pausa mais longa (long break time).</li>
+            </ol>
+        </div>
+
+        <footer class="text-sm text-center text-red-50 border-t mt-6 py-1 md:w-2/3 mx-auto">
+            <p>Developed by <a target="_blank" class="underline" href="https://github.com/thigoap">thigoap</a></p>
+            <p><a target="_blank" href="https://www.flaticon.com/br" >Icons created by Freepik - Flaticon</a></p>
+        </footer>
+    </section>
     
-    <footer class="text-sm text-slate-300 pb-12 sm:pb-0">
-        <p>Developed by <a target="_blank" class="underline" href="https://github.com/thigoap">thigoap</a> with Brython and TailwindCSS</p>
-        <a target="_blank" href="https://www.flaticon.com/br" >Icons created by Freepik - Flaticon</a>
-    </footer>
     
 </body>
 </html>
