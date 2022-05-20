@@ -21,217 +21,226 @@
     <link href="https://fonts.googleapis.com/css2?family=Righteous&display=swap" rel="stylesheet">
     <title>Pomodoro Clock</title>
     <link rel="icon" type="image/x-icon" href="./static/assets/img/favicon.ico">
-    <audio id="audio" src="./static/assets/audio/codec.mp3" type="audio/mp3"></audio>
 </head>
 
 <body onload="brython()" id="body"
-    class="text-center flex flex-col h-full bg-slate-50" style="font-family: 'Righteous', cursive">
-    <div class="pt-4 h-screen">
-    <header class="flex justify-center mb-4">
-        <p class="text-red-500 text-5xl">Pomodor</p>
-        <div class="flex items-end pb-1">
-            <img class="h-8" src="./static/assets/img/pomo.png" alt="pomodoro">
-        </div>
-    </header>
-
-    <main class="grow">
-        
-        <section id="buttons" class="my-2">
-            <div class="flex align-center justify-center">
-            <button id="setBtn" class="flex justify-center rounded py-2 w-12 mx-1 bg-slate-800 hover:bg-slate-600 duration-200">
-                <img class="mx-1 h-6 cursor-pointer"
-                src="./static/assets/img/settings-white.png">
-            </button>
-            <button id="stBtn" value="initial"
-                class="rounded py-2 w-24 mx-1 bg-green-600 text-white hover:bg-green-500 duration-200">
-                start</button>
-            <button id="rstBtn" disabled
-                class="rounded py-2 w-24 mx-1 bg-blue-600 text-white hover:bg-blue-500 duration-200 disabled:bg-slate-300">
-                reset</button>
+class="text-center flex flex-col h-full bg-slate-50" style="font-family: 'Righteous', cursive">      
+    <div class="pt-4  flex flex-col h-screen">
+        <header class="flex justify-center mb-4">
+            <p class="text-red-500 text-5xl">Pomodor</p>
+            <div class="flex items-end pb-1">
+                <img class="h-8" src="./static/assets/img/pomo.png" alt="pomodoro">
             </div>
-        </section>
+        </header>
 
-        <section id="timer" class="mt-4">
-            <p class="text-3xl text-slate-500">
-                <span id="status">Timer</span><span id="x_session"></span>
-            </p>
-            <p class="text-5xl">
-                <span id="mins">25</span>:<span id="secs">00</span>
-            </p>
-        </section>
+        <main class="grow">
+            
+            <section id="buttons" class="my-2">
+                <div class="flex align-center justify-center">
+                <button id="setBtn" class="flex justify-center rounded py-2 w-12 mx-1 bg-slate-800 hover:bg-slate-600 duration-200">
+                    <img class="mx-1 h-6 cursor-pointer"
+                    src="./static/assets/img/settings-white.png">
+                </button>
+                <button id="stBtn" value="initial"
+                    class="rounded py-2 w-24 mx-1 bg-green-600 text-white hover:bg-green-500 duration-200">
+                    start</button>
+                <button id="rstBtn" disabled
+                    class="rounded py-2 w-24 mx-1 bg-blue-600 text-white hover:bg-blue-500 duration-200 disabled:bg-slate-300">
+                    reset</button>
+                </div>
+            </section>
 
-        <section id="modalSetsContainer" class="hidden fixed flex justify-center items-center bg-opacity-40 bg-slate-500 h-full w-full top-0 left-0">
-            <div id="modalSets" class="bg-slate-50 p-3 h-52 rounded">  
-                <p id="msg" class="text-red-500 text-xs hidden">Reset the timer to enable controls</p>              
-                <div id="inputs" class="flex justify-center mb-2">  
-                    <div class="mx-2">
-                        <p>Work time</p>
-                        <div class="flex flex-col align-center">
-                            <div class="flex justify-center">
-                                <input type="image" id="workup" class="h-4"
-                                    src="./static/assets/img/caret-up.png">
+            <section id="timer" class="mt-4">
+                <p class="text-3xl text-slate-500">
+                    <span id="status">Timer</span><span id="x_session"></span>
+                </p>
+                <p class="text-5xl">
+                    <span id="mins">25</span>:<span id="secs">00</span>
+                </p>
+            </section>
+
+            <section id="modalSetsContainer" class="hidden fixed flex justify-center items-center bg-opacity-40 bg-slate-500 h-full w-full top-0 left-0">
+                <div id="modalSets" class="bg-slate-50 p-3 h-52 rounded">  
+                    <p id="msg" class="text-red-500 text-xs hidden">Reset the timer to enable controls</p>              
+                    <div id="inputs" class="flex justify-center mb-2">  
+                        <div class="mx-2">
+                            <p>Work time</p>
+                            <div class="flex flex-col align-center">
+                                <div class="flex justify-center">
+                                    <input type="image" id="workup" class="h-4"
+                                        src="./static/assets/img/caret-up.png">
+                                </div>
+                                <span id="work" class="text-xl text-slate-700">25</span>
+                                <div class="flex justify-center">
+                                    <input type="image" id="workdown" class="h-4"
+                                    src="./static/assets/img/caret-down.png">
+                                </div>
                             </div>
-                            <span id="work" class="text-xl text-slate-700">25</span>
-                            <div class="flex justify-center">
-                                <input type="image" id="workdown" class="h-4"
-                                src="./static/assets/img/caret-down.png">
+                            <div class="flex justify-around text-slate-400">
+                                <p><input type="button" id="btn15" class="cursor-pointer" value="15"></p>
+                                <p><input type="button" id="btn30" class="cursor-pointer" value="30"></p>
+                                <p><input type="button" id="btn45" class="cursor-pointer" value="45"></p>
                             </div>
                         </div>
-                        <div class="flex justify-around text-slate-400">
-                            <p><input type="button" id="btn15" class="cursor-pointer" value="15"></p>
-                            <p><input type="button" id="btn30" class="cursor-pointer" value="30"></p>
-                            <p><input type="button" id="btn45" class="cursor-pointer" value="45"></p>
-                        </div>
-                    </div>
-                    <div class="mx-2">
-                        <p>Break time</p>
-                        <div class="flex flex-col">
-                            <div class="flex justify-center">
-                                <input type="image" id="breakup" class="h-4"
-                            src="./static/assets/img/caret-up.png">
-                            </div>
-                            <span id="pause" class="text-xl text-slate-700">05</span>
-                            <div class="flex justify-center">
-                                <input type="image" id="breakdown" class="h-4"
-                                src="./static/assets/img/caret-down.png">
+                        <div class="mx-2">
+                            <p>Break time</p>
+                            <div class="flex flex-col">
+                                <div class="flex justify-center">
+                                    <input type="image" id="breakup" class="h-4"
+                                src="./static/assets/img/caret-up.png">
+                                </div>
+                                <span id="pause" class="text-xl text-slate-700">05</span>
+                                <div class="flex justify-center">
+                                    <input type="image" id="breakdown" class="h-4"
+                                    src="./static/assets/img/caret-down.png">
+                                </div>
+                            </div> 
+                            <div class="flex justify-around text-slate-400">
+                                <p><input type="button" id="btn3" class="cursor-pointer" value="03"></p>
+                                <p><input type="button" id="btn5" class="cursor-pointer" value="05"></p>
+                                <p><input type="button" id="btn10" class="cursor-pointer" value="10"></p>
                             </div>
                         </div> 
-                        <div class="flex justify-around text-slate-400">
-                            <p><input type="button" id="btn3" class="cursor-pointer" value="03"></p>
-                            <p><input type="button" id="btn5" class="cursor-pointer" value="05"></p>
-                            <p><input type="button" id="btn10" class="cursor-pointer" value="10"></p>
-                        </div>
-                    </div> 
-                    <div class="mx-2">
-                        <p>Sessions</p>
-                        <div class="flex flex-col">
-                            <div class="flex justify-center">
-                                <input type="image" id="sessionup" class="h-4"
-                                src="./static/assets/img/caret-up.png">
-                            </div>
-                            <span id="sessions" class="text-xl text-slate-700">05</span>
-                            <div class="flex justify-center">
-                                <input type="image" id="sessiondown" class="h-4"
-                                src="./static/assets/img/caret-down.png">
-                            </div>
-                        </div>  
-                        <div class="flex justify-around text-slate-400">
-                            <p><input type="button" id="btns3" class="cursor-pointer" value="03"></p>
-                            <p><input type="button" id="btns5" class="cursor-pointer" value="05"></p>
-                            <p><input type="button" id="btns10" class="cursor-pointer" value="10"></p>
-                        </div>       
-                    </div>
-                    <div class="mx-2">
-                        <p>Long break</p>
-                        <div class="flex flex-col align-center">
-                            <div class="flex justify-center">
-                                <input type="image" id="lbreakup" class="h-4"
+                        <div class="mx-2">
+                            <p>Sessions</p>
+                            <div class="flex flex-col">
+                                <div class="flex justify-center">
+                                    <input type="image" id="sessionup" class="h-4"
                                     src="./static/assets/img/caret-up.png">
-                            </div>
-                            <span id="lbreak" class="text-xl text-slate-700">10</span>
-                            <div class="flex justify-center">
-                                <input type="image" id="lbreakdown" class="h-4"
-                                src="./static/assets/img/caret-down.png">
-                            </div>
+                                </div>
+                                <span id="sessions" class="text-xl text-slate-700">05</span>
+                                <div class="flex justify-center">
+                                    <input type="image" id="sessiondown" class="h-4"
+                                    src="./static/assets/img/caret-down.png">
+                                </div>
+                            </div>  
+                            <div class="flex justify-around text-slate-400">
+                                <p><input type="button" id="btns3" class="cursor-pointer" value="03"></p>
+                                <p><input type="button" id="btns5" class="cursor-pointer" value="05"></p>
+                                <p><input type="button" id="btns10" class="cursor-pointer" value="10"></p>
+                            </div>       
                         </div>
-                        <div class="flex justify-around text-slate-400">
-                            <p><input type="button" id="btnl10" class="cursor-pointer" value="10"></p>
-                            <p><input type="button" id="btnl20" class="cursor-pointer" value="20"></p>
-                            <p><input type="button" id="btnl30" class="cursor-pointer" value="30"></p>
+                        <div class="mx-2">
+                            <p>Long break</p>
+                            <div class="flex flex-col align-center">
+                                <div class="flex justify-center">
+                                    <input type="image" id="lbreakup" class="h-4"
+                                        src="./static/assets/img/caret-up.png">
+                                </div>
+                                <span id="lbreak" class="text-xl text-slate-700">10</span>
+                                <div class="flex justify-center">
+                                    <input type="image" id="lbreakdown" class="h-4"
+                                    src="./static/assets/img/caret-down.png">
+                                </div>
+                            </div>
+                            <div class="flex justify-around text-slate-400">
+                                <p><input type="button" id="btnl10" class="cursor-pointer" value="10"></p>
+                                <p><input type="button" id="btnl20" class="cursor-pointer" value="20"></p>
+                                <p><input type="button" id="btnl30" class="cursor-pointer" value="30"></p>
+                            </div>
                         </div>
                     </div>
-                </div>
-                
-                <div class="flex items-center justify-center w-full">
-                    <label for="toggleBtn" id="toggleBtnCursor" class="flex items-center cursor-pointer">
-                        <!-- toggle -->
-                        <div class="relative">
-                            <!-- input -->
-                            <input type="checkbox" id="toggleBtn" class="sr-only ">
-                            <!-- line -->
-                            <div class="block bg-slate-400 w-10 h-6 rounded-full">
-                            </div>
-                            <!-- dot -->
-                            <div class="dot absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition">
-                            </div>
+                    <div class="flex justify-around">
+                        <div class="flex items-center">
+                            <label for="toggleBtn" id="toggleBtnCursor" class="flex items-center cursor-pointer">
+                                <!-- toggle -->
+                                <div class="relative">
+                                    <!-- input -->
+                                    <input type="checkbox" id="toggleBtn" class="sr-only ">
+                                    <!-- line -->
+                                    <div class="block bg-slate-400 w-10 h-6 rounded-full">
+                                    </div>
+                                    <!-- dot -->
+                                    <div class="dot absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition">
+                                    </div>
+                                </div>
+                                <!-- label -->
+                                <div class="ml-3 text-slate-700">
+                                    <p>Auto start</p> 
+                                </div>
+                            </label>  
                         </div>
-                        <!-- label -->
-                        <div class="ml-3 text-slate-700">
-                            <p>Auto start</p> 
+                        <div>
+                            <label for="sounds">Sound:</label>
+                            <select name="sounds" id="sounds">
+                            <option value="codec">Codec</option>
+                            <option value="racing">Racing</option>
+                            <option value="scanner">Scanner</option>
+                            </select>
                         </div>
-                    </label>  
+                    </div>
+                    <div>
+                        <button id="closeSetsBtn"
+                        class="rounded py-1 mt-2 w-16 bg-slate-800 text-white hover:bg-slate-700 duration-200">
+                        close</button>
+                    </div>
                 </div>
-                <div>
-                    <button id="closeSetsBtn"
-                    class="rounded py-1 mt-2 w-16 bg-slate-800 text-white hover:bg-slate-700 duration-200">
-                    close</button>
-                </div>
-            </div>
-        </section>
+            </section>
 
-        <section id="tasks" class="mt-20 px-4 sm:px-0 mx-auto sm:w-3/5 lg:w-2/5 text-left">
-            <div class="flex justify-between border-b-2">
-                <p class="text-2xl grow mr-1">Tasks</p>
-                <p class="flex items-center"><input type="image" id="newTaskBtn" class="rounded w-6 bg-slate-800 hover:bg-slate-600 duration-200"
-                src="./static/assets/img/add-white.png">
-                </p>
-                <p class="flex items-center"><input type="image" id="delTasksBtn" disabled
-                    class="rounded w-6 ml-2 bg-red-500 hover:bg-red-400 disabled:bg-slate-300 duration-200"
-                src="./static/assets/img/delete-white.png">
-                </p>
-            </div>
-            <div id="tasksList" class="flex flex-col divide-y">
-            </div>
-        </section>
+            <section id="tasks" class="mt-20 px-4 sm:px-0 mx-auto sm:w-3/5 lg:w-2/5 text-left">
+                <div class="flex justify-between border-b-2">
+                    <p class="text-2xl grow mr-1">Tasks</p>
+                    <p class="flex items-center"><input type="image" id="newTaskBtn" class="rounded w-6 bg-slate-800 hover:bg-slate-600 duration-200"
+                    src="./static/assets/img/add-white.png">
+                    </p>
+                    <p class="flex items-center"><input type="image" id="delTasksBtn" disabled
+                        class="rounded w-6 ml-2 bg-red-500 hover:bg-red-400 disabled:bg-slate-300 duration-200"
+                    src="./static/assets/img/delete-white.png">
+                    </p>
+                </div>
+                <div id="tasksList" class="flex flex-col divide-y">
+                </div>
+            </section>
 
-        <section id="modalAddTasksContainer" class="hidden fixed flex justify-center items-center bg-opacity-40 bg-slate-500 h-full w-full top-0 left-0">
-            <div id="modalAddTasks" class="bg-slate-50 p-2 h-24 rounded flex flex-col justify-center">  
-                <div>
-                    <input id="task" type="text" class="px-1 w-64">
-                    <button id="addBtn"
-                    class="rounded py-1 w-12 ml-2 bg-slate-800 text-white hover:bg-slate-700 duration-200">ADD</button> 
+            <section id="modalAddTasksContainer" class="hidden fixed flex justify-center items-center bg-opacity-40 bg-slate-500 h-full w-full top-0 left-0">
+                <div id="modalAddTasks" class="bg-slate-50 p-2 h-24 rounded flex flex-col justify-center">  
+                    <div>
+                        <input id="task" type="text" class="px-1 w-64">
+                        <button id="addBtn"
+                        class="rounded py-1 w-12 ml-2 bg-slate-800 text-white hover:bg-slate-700 duration-200">ADD</button> 
+                    </div>
+                    <div>
+                        <button id="closeAddTasksBtn"
+                        class="rounded py-1 mt-2 w-16 bg-slate-800 text-white hover:bg-slate-700 duration-200">
+                        close</button>
+                    </div>
                 </div>
-                <div>
-                    <button id="closeAddTasksBtn"
-                    class="rounded py-1 mt-2 w-16 bg-slate-800 text-white hover:bg-slate-700 duration-200">
-                    close</button>
-                </div>
-            </div>
-        </section>
+            </section>
 
-        <section id="modalEditTasksContainer" class="hidden fixed flex justify-center items-center bg-opacity-40 bg-slate-500 h-full w-full top-0 left-0">
-            <div id="modalEditTasks" class="bg-slate-50 p-2 h-24 rounded flex flex-col justify-center">  
-                <div>
-                    <input id="taskToEdit" type="text" class="px-1 w-64">
-                    <button id="editBtn"
-                    class="rounded py-1 w-12 ml-2 bg-slate-800 text-white hover:bg-slate-700 duration-200">EDIT</button> 
+            <section id="modalEditTasksContainer" class="hidden fixed flex justify-center items-center bg-opacity-40 bg-slate-500 h-full w-full top-0 left-0">
+                <div id="modalEditTasks" class="bg-slate-50 p-2 h-24 rounded flex flex-col justify-center">  
+                    <div>
+                        <input id="taskToEdit" type="text" class="px-1 w-64">
+                        <button id="editBtn"
+                        class="rounded py-1 w-12 ml-2 bg-slate-800 text-white hover:bg-slate-700 duration-200">EDIT</button> 
+                    </div>
+                    <div>
+                        <button id="closeEditTasksBtn"
+                        class="rounded py-1 mt-2 w-16 bg-slate-800 text-white hover:bg-slate-700 duration-200">
+                        close</button>
+                    </div>
                 </div>
-                <div>
-                    <button id="closeEditTasksBtn"
-                    class="rounded py-1 mt-2 w-16 bg-slate-800 text-white hover:bg-slate-700 duration-200">
-                    close</button>
-                </div>
-            </div>
-        </section>
+            </section>
 
-        <section id="modalDellAllTasksContainer" class="hidden fixed flex justify-center items-center bg-opacity-40 bg-slate-500 h-full w-full top-0 left-0">
-            <div id="modalDellAllTasks" class="bg-slate-50 p-2 h-24 rounded flex flex-col justify-center">  
-                <div>
-                    <p>Delete all tasks?</p>
+            <section id="modalDellAllTasksContainer" class="hidden fixed flex justify-center items-center bg-opacity-40 bg-slate-500 h-full w-full top-0 left-0">
+                <div id="modalDellAllTasks" class="bg-slate-50 p-2 h-24 rounded flex flex-col justify-center">  
+                    <div>
+                        <p>Delete all tasks?</p>
+                    </div>
+                    <div>
+                        <button id="dellAllTasksBtn"
+                        class="rounded py-1 mt-2 w-16 bg-red-500 text-white hover:bg-red-400 duration-200">
+                        OK</button>
+                        <button id="closeDellAllTasksBtn"
+                        class="rounded py-1 mt-2 w-16 bg-slate-800 text-white hover:bg-slate-700 duration-200">
+                        cancel</button>
+                    </div>
                 </div>
-                <div>
-                    <button id="dellAllTasksBtn"
-                    class="rounded py-1 mt-2 w-16 bg-red-500 text-white hover:bg-red-400 duration-200">
-                    OK</button>
-                    <button id="closeDellAllTasksBtn"
-                    class="rounded py-1 mt-2 w-16 bg-slate-800 text-white hover:bg-slate-700 duration-200">
-                    cancel</button>
-                </div>
-            </div>
-        </section>
+            </section>
 
-        
-    </main>
+            
+        </main>
+        <div class="text-right pr-2">Scroll for more info</div>
     </div>
     <section class="bg-red-500 text-white text-left px-4 md:px-0 pt-4">
         <div class="md:w-7/12 mx-auto">
@@ -253,7 +262,6 @@
             <p><a target="_blank" href="https://www.flaticon.com/br" >Icons created by Freepik - Flaticon</a></p>
         </footer>
     </section>
-    
-    
+    <audio id="audio" src="./static/assets/audio/codec.mp3"></audio>
 </body>
 </html>

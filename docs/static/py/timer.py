@@ -1,4 +1,4 @@
-from browser import document, timer, bind
+from browser import document, timer, bind, html
 
 _timer = None
 x_time = 0 # 0 = break time / 1 = working time
@@ -205,6 +205,19 @@ def show_modal(e):
 def hide_modal(e):
     document['modalSetsContainer'].classList.add('hidden')
 
+@bind(document['sounds'], 'change')
+def select_audio(e):
+    print('audio', e.target.selectedIndex)
+    sound = e.target.selectedIndex
+    if sound == 0:
+        audioSRC = './static/assets/audio/codec.mp3'
+    elif sound == 1:
+        audioSRC = './static/assets/audio/racing.wav'
+    elif sound == 2:
+        audioSRC = './static/assets/audio/scanner.wav'
+    document['audio'].src = audioSRC
+    document['audio'].play() 
+
 def btn_to_stop():
     document['stBtn'].text = 'stop'
     document['stBtn'].value = 'RUNNING'
@@ -239,6 +252,7 @@ def disable_btns():
     document['btns5'].disabled = True
     document['btns10'].disabled = True
     document['toggleBtn'].disabled = True
+    document['sounds'].disabled = True
     document['btn15'].classList.remove('cursor-pointer')
     document['btn30'].classList.remove('cursor-pointer')
     document['btn45'].classList.remove('cursor-pointer')
@@ -270,6 +284,7 @@ def enable_btns():
     document['btns5'].disabled = False
     document['btns10'].disabled = False
     document['toggleBtn'].disabled = False
+    document['sounds'].disabled = False
     document['btn15'].classList.add('cursor-pointer')
     document['btn30'].classList.add('cursor-pointer')
     document['btn45'].classList.add('cursor-pointer')

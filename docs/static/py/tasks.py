@@ -1,4 +1,4 @@
-from browser import document, bind, html, confirm
+from browser import document, bind, html
 from browser.local_storage import storage
 import time
 import json
@@ -17,19 +17,16 @@ def del_all(e):
 # tasks list buttons
 def doneBtn(e):
     taskHTML = document[e.target.id[5:]]
-    child = taskHTML.children[0].children[0]
     taskID = taskHTML.id
     taskObj = json.loads(storage[taskID])
-    del document[e.target.id]
     if not taskObj['done']:
-        child <= html.IMG(id=f'done_{taskID}', Class='h-6 cursor-pointer min-w-min', src='./static/assets/img/tick-done.png')
+        document[f'done_{taskID}'].src ='./static/assets/img/tick-done.png'
         taskObj['done'] = True
         storage[taskID] = json.dumps(taskObj, ensure_ascii=False)
     else:
-        child <= html.IMG(id=f'done_{taskID}', Class='h-6 cursor-pointer min-w-min', src='./static/assets/img/tick.png')        
+        document[f'done_{taskID}'].src ='./static/assets/img/tick.png'        
         taskObj['done'] = False
-        storage[taskID] = json.dumps(taskObj, ensure_ascii=False)
-    document[f'done_{taskID}'].bind('click', doneBtn)
+        storage[taskID] = json.dumps(taskObj, ensure_ascii=False)  
 
 def editBtn(e):
     global editTaskID

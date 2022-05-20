@@ -11,8 +11,4 @@ Made with [Brython](https://brython.info), python in the browser.
 - start work or break times manually or automatically;
 - long break;
 - tasks/todo app;
-
-#### Items to do:
-
-- dark mode toggle;
-- add new alarm sounds;
+- alarm sounds;
