@@ -207,7 +207,6 @@ def hide_modal(e):
 
 @bind(document['sounds'], 'change')
 def select_audio(e):
-    print('audio', e.target.selectedIndex)
     sound = e.target.selectedIndex
     if sound == 0:
         audioSRC = './static/assets/audio/codec.mp3'

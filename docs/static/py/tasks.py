@@ -47,8 +47,6 @@ def delBtn(e):
 def add_task(e):
     task = document['task'].value
     timestamp = time.time()
-    if len(storage) == 0:
-        document['delTasksBtn'].disabled = False
     if task.strip():
         mainDiv = divGenerator(timestamp, task)
         storage[str(timestamp)] = json.dumps({'id': timestamp, 'task': task, 'done': False}, ensure_ascii=False)
@@ -58,6 +56,8 @@ def add_task(e):
         document[f'edit_{timestamp}'].bind('click', editBtn)
         document[f'del_{timestamp}'].bind('click', delBtn)
         document[f'done_{timestamp}'].bind('click', doneBtn)
+    if len(storage) == 1:
+        document['delTasksBtn'].disabled = False
 
 @bind(document['task'], 'keypress')
 def add_with_enter(e):
@@ -138,4 +138,11 @@ if len(storage) > 0:
         document[f'del_{taskID}'].bind('click', delBtn)
         document[f'done_{taskID}'].bind('click', doneBtn)  
         document['delTasksBtn'].disabled = False
-  
+
+@bind(document['infoBtn'], 'click')
+def hide_info(e):
+    document['modalInfoContainer'].classList.remove('hidden')
+
+@bind(document['closeInfoBtn'], 'click')
+def show_info(e):
+    document['modalInfoContainer'].classList.add('hidden')
