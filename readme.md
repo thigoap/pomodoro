@@ -12,3 +12,8 @@ Made with [Brython](https://brython.info), python in the browser.
 - long break;
 - tasks/todo app;
 - alarm sounds;
+- tasks counter;
+
+#### To Do:
+
+- option for urgent tasks;

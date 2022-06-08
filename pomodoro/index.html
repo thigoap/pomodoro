@@ -180,14 +180,19 @@
 
         <section id="tasks" class="mt-20 px-4 sm:px-0 mx-auto sm:w-3/5 lg:w-2/5 text-left">
             <div class="flex justify-between border-b-2">
-                <p class="text-2xl grow mr-1">Tasks</p>
-                <p class="flex items-center"><input type="image" id="newTaskBtn" class="rounded w-6 bg-slate-800 hover:bg-slate-600 duration-200"
-                src="./static/assets/img/add-white.png">
-                </p>
-                <p class="flex items-center"><input type="image" id="delTasksBtn" disabled
-                    class="rounded w-6 ml-2 bg-red-500 hover:bg-red-400 disabled:bg-slate-300 duration-200"
-                src="./static/assets/img/delete-white.png">
-                </p>
+                <p class="text-2xl mr-1">Tasks</p>
+                <div class="flex items-center">
+                    <p id="tasksCounter" class="text-base"></p>
+                </div>
+                <div class="flex">
+                    <p class="flex items-center"><input type="image" id="newTaskBtn" class="rounded w-6 bg-slate-800 hover:bg-slate-600 duration-200"
+                    src="./static/assets/img/add-white.png">
+                    </p>
+                    <p class="flex items-center"><input type="image" id="delTasksBtn" disabled
+                        class="rounded w-6 ml-2 bg-red-500 hover:bg-red-400 disabled:bg-slate-300 duration-200"
+                    src="./static/assets/img/delete-white.png">
+                    </p>
+                </div>
             </div>
             <div id="tasksList" class="flex flex-col divide-y">
             </div>

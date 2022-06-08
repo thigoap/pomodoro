@@ -90,7 +90,7 @@ def set_current_time(status):
     global mins, secs, x_time, session
     if status == 0: # intial or finished a cycle
         if x_time == 1 and session == sessions:
-            mins = document['work'].text
+            mins = document['lbreak'].text
             x_time = 0
             document['status'].text = 'long break time '            
         elif x_time == 1: # finished a working cycle

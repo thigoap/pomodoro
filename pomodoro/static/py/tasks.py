@@ -26,7 +26,8 @@ def doneBtn(e):
     else:
         document[f'done_{taskID}'].src ='./static/assets/img/tick.png'        
         taskObj['done'] = False
-        storage[taskID] = json.dumps(taskObj, ensure_ascii=False)  
+        storage[taskID] = json.dumps(taskObj, ensure_ascii=False) 
+    updateTasksCounter() 
 
 def editBtn(e):
     global editTaskID
@@ -41,6 +42,7 @@ def delBtn(e):
     del storage[e.target.id[4:]]
     if len(storage) == 0:
         document['delTasksBtn'].disabled = True
+    updateTasksCounter()
 
 # modal buttons
 @bind(document['addBtn'], 'click')
@@ -58,6 +60,7 @@ def add_task(e):
         document[f'done_{timestamp}'].bind('click', doneBtn)
     if len(storage) == 1:
         document['delTasksBtn'].disabled = False
+    updateTasksCounter()
 
 @bind(document['task'], 'keypress')
 def add_with_enter(e):
@@ -90,6 +93,7 @@ def dell_all_tasks(e):
         del document[task]
         document['modalDellAllTasksContainer'].classList.add('hidden')
         document['delTasksBtn'].disabled = True
+    updateTasksCounter()
 
 @bind(document['closeAddTasksBtn'], 'click')
 def hide_modal(e):
@@ -103,6 +107,14 @@ def hide_modal(e):
 @bind(document['closeDellAllTasksBtn'], 'click')
 def hide_modal(e):
     document['modalDellAllTasksContainer'].classList.add('hidden')
+
+@bind(document['infoBtn'], 'click')
+def hide_info(e):
+    document['modalInfoContainer'].classList.remove('hidden')
+
+@bind(document['closeInfoBtn'], 'click')
+def show_info(e):
+    document['modalInfoContainer'].classList.add('hidden')
 
 
 def divGenerator(taskID, task, done = False):
@@ -126,7 +138,24 @@ def divGenerator(taskID, task, done = False):
     mainDiv <= (div1 + div2)
     return mainDiv
 
+def updateTasksCounter():
+    document['tasksCounter'].text = 'Waiting for tasks...'
+    if len(storage) > 0:
+        total_tasks = len(storage)
+        done_tasks = 0
+        for taskID in storage:
+            taskObj = json.loads(storage[taskID])
+            if taskObj['done'] == True:
+                done_tasks += 1
+        
+        if done_tasks == total_tasks:
+            document['tasksCounter'].text = 'All tasks completed!'
+        else:
+            document['tasksCounter'].text = f'{done_tasks} of {total_tasks} completed'
+        
+
 # runs on load: populate tasks stored in storage
+updateTasksCounter()
 if len(storage) > 0:
     for taskID in storage:
         taskObj = json.loads(storage[taskID])
@@ -138,11 +167,3 @@ if len(storage) > 0:
         document[f'del_{taskID}'].bind('click', delBtn)
         document[f'done_{taskID}'].bind('click', doneBtn)  
         document['delTasksBtn'].disabled = False
-
-@bind(document['infoBtn'], 'click')
-def hide_info(e):
-    document['modalInfoContainer'].classList.remove('hidden')
-
-@bind(document['closeInfoBtn'], 'click')
-def show_info(e):
-    document['modalInfoContainer'].classList.add('hidden')
